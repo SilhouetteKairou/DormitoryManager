@@ -1,0 +1,58 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminMasterPage.master.cs" Inherits="AdminMasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <!-- 元信息 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Generator" content="Sublime_Text@">
+    <meta name="Author" content="xq17">
+    <meta name="KeyWords" content="study">
+    <meta name="Description" content="frontend study">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 设置http头部 -->
+    <meta name="http-equiv" content="text/html;" />
+    <!-- 标题 -->
+    <title>ASP.NET-Show</title>
+    <!-- css -->
+    <link href="Style/main.css" rel="stylesheet" />
+    <link href="Style/theme.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- js -->
+    <script src="Scripts/jquery-1.8.3.min.js"></script>
+    <script src="Scripts/jquery-3.2.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+    <form runat="server">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">青叶考研网后台</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse" runat="server">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <!--以下页面只有管理员身份登录后才能看到 -->
+                        <li><a href="UserManagement.aspx">用户管理</a></li>
+                        <li><a href="AdminLogout.aspx">退出登录</a></li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </nav>
+        <asp:ContentPlaceHolder ID="Content" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>
