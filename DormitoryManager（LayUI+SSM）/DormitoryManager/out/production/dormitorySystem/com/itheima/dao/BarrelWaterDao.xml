@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.BarrelWaterDao" >
+
+    <!--分页查询-->
+    <select id="getBarrelWaterList" parameterType="BarrelWater" resultType="BarrelWater">
+        select * from d_barrelwater
+        <where>
+            <if test="d_id!=null and d_id!=0">
+                and  d_id like  '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                and  d_dormbuilding like  '%${d_dormbuilding}%'
+            </if>
+        </where>
+        ORDER BY  b_id asc
+        limit #{currentPage},#{pageSize}
+    </select>
+
+    <!--查询数据总数-->
+    <select id="totalCount"  resultType="Integer">
+        select count(b_id) from d_barrelwater
+        <where>
+            <if test="d_id!=null and d_id!=0">
+                and  d_id like  '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                and  d_dormbuilding like  '%${d_dormbuilding}%'
+            </if>
+        </where>
+    </select>
+
+    <!--添加购买桶装水信息-->
+    <insert id="addBarrelWater" parameterType="BarrelWater" keyProperty="b_id" useGeneratedKeys="true">
+        insert into d_barrelwater (d_id,d_dormbuilding,d_barrelwater_monovalent,d_barrelcount,d_payment,d_distribute,create_time,update_time)
+        values(#{d_id},#{d_dormbuilding},#{d_barrelwater_monovalent},#{d_barrelcount},#{d_payment},#{d_distribute},now(),now())
+    </insert>
+
+    <!--通过id删除桶装水购买信息-->
+    <delete id="deleteBarrelWater" parameterType="Integer" >
+        delete from d_barrelwater where b_id=#{b_id}
+    </delete>
+
+    <select id="findBarrelWaterById"  parameterType="Integer" resultType="BarrelWater" >
+        select * from d_barrelwater where b_id=#{b_id}
+    </select>
+
+    <!--修改桶装水购买信息-->
+    <update id="updateBarrelWater" parameterType="BarrelWater">
+        update d_barrelwater
+        <set>
+            <if test="d_id!=null and d_id!=0">
+                d_id=#{d_id},
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                d_dormbuilding=#{d_dormbuilding},
+            </if>
+            <if test="d_barrelwater_monovalent!=null and d_barrelwater_monovalent!=0">
+                d_barrelwater_monovalent=#{d_barrelwater_monovalent},
+            </if>
+            <if test="d_barrelcount!=null and d_barrelcount!=0">
+                d_barrelcount=#{d_barrelcount},
+            </if>
+            <if test="d_payment!=null and d_payment!=0">
+                d_payment=#{d_payment},
+            </if>
+            <if test="d_distribute!=null and d_distribute!=0">
+                d_distribute=#{d_distribute},
+            </if>
+            <if test="update_time != null" >
+                update_time = now(),
+            </if>
+        </set>
+        where b_id = #{b_id}
+    </update>
+
+
+    <select id="getAll" resultType="BarrelWater">
+        select * from d_barrelwater;
+    </select>
+
+    <!--桶装水购买信息查询信息-->
+    <resultMap type="com.itheima.po.BarrelWater" id="cardAndInfo2">
+        <id property="d_id" column="d_id"/>
+        <result property="d_dormbuilding" column="d_dormbuilding" />
+    </resultMap>
+
+
+</mapper>

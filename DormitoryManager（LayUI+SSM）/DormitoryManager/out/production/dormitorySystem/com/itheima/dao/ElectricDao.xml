@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.ElectricDao" >
+
+    <!--分页查询-->
+    <select id="getElectricList" parameterType="Electric" resultType="Electric">
+        select * from d_electric
+        <where>
+            <if test="d_id!=null and d_id!=0">
+                and  d_id like  '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                and  d_dormbuilding like  '%${d_dormbuilding}%'
+            </if>
+        </where>
+        ORDER BY  e_id asc
+        limit #{currentPage},#{pageSize}
+    </select>
+
+    <!--查询数据总数-->
+    <select id="totalCount"  resultType="Integer">
+        select count(e_id) from d_electric
+        <where>
+            <if test="d_id!=null and d_id!=0">
+                and  d_id like  '%${d_id}%'
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                and  d_dormbuilding like  '%${d_dormbuilding}%'
+            </if>
+        </where>
+    </select>
+
+    <!--添加宿舍电费信息-->
+    <insert id="addElectric" parameterType="Electric" keyProperty="e_id" useGeneratedKeys="true">
+        insert into d_electric (d_id,d_dormbuilding,d_dormelectric,d_dormbalance,create_time,update_time)
+        values(#{d_id},#{d_dormbuilding},#{d_dormelectric},#{d_dormbalance},now(),now())
+    </insert>
+
+    <!--通过id删除宿舍电费信息-->
+    <delete id="deleteElectric" parameterType="Integer" >
+        delete from d_electric where e_id=#{e_id}
+    </delete>
+
+    <select id="findElectricById"  parameterType="Integer" resultType="Electric" >
+        select * from d_electric where e_id=#{e_id}
+    </select>
+
+    <!--修改宿舍电费信息-->
+    <update id="updateElectric" parameterType="Electric">
+        update d_electric
+        <set>
+            <if test="d_id!=null and d_id!=0">
+                d_id=#{d_id},
+            </if>
+            <if test="d_dormbuilding !=null and d_dormbuilding !=''">
+                d_dormbuilding=#{d_dormbuilding},
+            </if>
+            <if test="d_dormelectric!=null and d_dormelectric!=0">
+                d_dormelectric=#{d_dormelectric},
+            </if>
+            <if test="d_dormbalance!=null and d_dormbalance!=0">
+                d_dormbalance=d_dormbalance + #{d_dormbalance},
+            </if>
+            <if test="update_time != null" >
+                update_time = now(),
+            </if>
+        </set>
+        where e_id = #{e_id}
+    </update>
+
+<!--    &lt;!&ndash;模拟自动用电，修改用电量&ndash;&gt;-->
+<!--    <update id="useElectric" parameterType="Electric">-->
+<!--        update d_electric-->
+<!--        <set>-->
+<!--            <if test="d_dormelectric!=null and d_dormelectric!=0">-->
+<!--                d_dormelectric=d_dormelectric + 2.1, /*每秒走2.1度电*/-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        where e_id = #{e_id}-->
+<!--    </update>-->
+
+    <select id="getAll" resultType="Electric">
+        select * from d_electric;
+    </select>
+
+    <!--宿舍电费信息查询信息-->
+    <resultMap type="com.itheima.po.Electric" id="cardAndInfo2">
+        <id property="d_id" column="d_id"/>
+        <result property="d_dormbuilding" column="d_dormbuilding" />
+    </resultMap>
+
+
+</mapper>
